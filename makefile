@@ -18,7 +18,7 @@ FILES :=                              \
 ifeq ($(shell uname), Darwin)                                        # Apple
     CXX          := g++
     INCLUDE      := /usr/local/include
-    CXXFLAGS     := -pedantic -std=c++11 -I$(INCLUDE) -Wall -Weffc++
+    CXXFLAGS     := -pedantic -std=c++11 -I$(INCLUDE) -Wall -Weffc++ -lboost_serialization
     LIB          := /usr/local/lib
     LDFLAGS      := -lgtest_main
     CLANG-CHECK  := clang-check
@@ -42,7 +42,7 @@ else ifeq ($(CI), true)                                              # Travis CI
 else ifeq ($(shell uname -p), unknown)                               # Docker
     CXX          := g++
     INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++11 -Wall -Weffc++
+    CXXFLAGS     := -pedantic -std=c++11 -L/usr/lib/x86_64-linux-gnu/ -lboost_serialization -Wall -Weffc++
     LIB          := /usr/lib
     LDFLAGS      := -lgtest -lgtest_main -pthread
     CLANG-CHECK  := clang-check
@@ -79,14 +79,9 @@ Doxyfile:
 
 RunNetflix: Netflix.h Netflix.c++ RunNetflix.c++
 	$(CXX) $(CXXFLAGS) Netflix.c++ RunNetflix.c++ -o RunNetflix
-	-$(CLANG-CHECK) -extra-arg=-std=c++11          Netflix.c++     --
-	-$(CLANG-CHECK) -extra-arg=-std=c++11 -analyze Netflix.c++     --
-	-$(CLANG-CHECK) -extra-arg=-std=c++11          RunNetflix.c++  --
-	-$(CLANG-CHECK) -extra-arg=-std=c++11 -analyze RunNetflix.c++  --
 
 RunNetflix.tmp: RunNetflix
-	./RunNetflix < RunNetflix.in > RunNetflix.tmp
-	diff RunNetflix.tmp RunNetflix.out
+	./RunNetflix < netflix/probe.txt > RunNetflix.tmp
 
 TestNetflix: Netflix.h Netflix.c++ TestNetflix.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Netflix.c++ TestNetflix.c++ -o TestNetflix $(LDFLAGS)
@@ -152,8 +147,8 @@ status:
 
 # test: html Netflix.log RunNetflix.tmp TestNetflix.tmp netflix-tests check
 
-test: html Netflix.log check
-	
+test: RunNetflix.tmp
+
 versions:
 	which make
 	make --version
