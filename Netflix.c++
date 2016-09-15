@@ -11,7 +11,7 @@
 #include <iostream> // endl, istream, ostream
 #include <sstream>
 #include <fstream>
-#include <stdint.h>
+#include <math.h>
 #include <iomanip>
 #include <map>
 #include <boost/serialization/map.hpp>
@@ -124,4 +124,119 @@ void generate_ratings_cache(istream &r, ostream &w) {
 
   print_all_movie_ratings(w, new_all_movie_ratings);
 
+}
+
+void generate_averages_cache(int movie_id, double averages[]) {
+  // return rating
+  ostringstream movie_file_name;
+  movie_file_name << internal << setfill('0') << setw(7) << movie_id;
+  // cout << "mv_" + movie_file_name.str() + ".txt" << endl;
+  ifstream movie_file("netflix/training_set/mv_" + movie_file_name.str() + ".txt");
+
+  double average = 0.0;
+  int count = 0;
+
+
+  if (movie_file.is_open()) {
+    string line;
+    getline(movie_file,line);
+    line.pop_back(); // remove : from the end
+    // assert(stoi(line), movie_id); // confirms that it's the right file
+
+    while (getline(movie_file,line)) {
+      istringstream ss(line);
+      string token;
+      getline(ss, token, ',');
+      int user_id = stoi(token);
+
+      getline(ss, token, ',');
+      average += stoi(token);
+      ++count;
+    }
+
+    averages[movie_id] = average / count;
+    // cout << movie_id << " " << fixed << setprecision(2) << averages[movie_id] << endl;
+    movie_file.close();
+  }
+  // return 3;
+}
+
+void predict(istream &r, ostream &w) {
+  map<int, map<int, int>> new_all_movie_ratings;
+  ifstream mac("MovieArchiveCache");
+  boost::archive::text_iarchive ia(mac);
+  ia >> new_all_movie_ratings;
+
+  double averages_cache [17771];
+  ifstream ac("AveragesCache");
+  boost::archive::text_iarchive ia2(ac);
+  ia2 >> averages_cache;
+
+  int movie_id = 0;
+  int user_id = 0;
+
+  double rmse = 0;
+  int count = 0;
+
+  string line;
+  while(getline(r, line)) {
+    if (line.back() == ':') {
+      w << line << endl;
+      line.pop_back(); // remove : from the end
+      movie_id = stoi(line);
+
+    } else {
+      user_id = stoi(line);
+
+      double prediction = averages_cache[movie_id];
+      int actual = new_all_movie_ratings[movie_id][user_id];
+      ++count;
+      rmse += pow(prediction - actual, 2);
+
+      w << fixed << setprecision(2) << prediction << endl;
+    }
+  }
+
+  rmse = sqrt(rmse / count);
+  w << "RMSE: " << rmse;
+}
+
+void movie_user_lookup(int movie_id, map<int, map<int, int>>& ratings) {
+  // return rating
+  ostringstream movie_file_name;
+  movie_file_name << internal << setfill('0') << setw(7) << movie_id;
+  // cout << "mv_" + movie_file_name.str() + ".txt" << endl;
+  ifstream movie_file("netflix/training_set/mv_" + movie_file_name.str() + ".txt");
+
+  if (movie_file.is_open()) {
+    string line;
+    getline(movie_file,line);
+    line.pop_back(); // remove : from the end
+    // assert(stoi(line), movie_id); // confirms that it's the right file
+
+    while (getline(movie_file,line)) {
+      istringstream ss(line);
+      string token;
+      getline(ss, token, ',');
+      int user_id = stoi(token);
+
+      getline(ss, token, ',');
+      ratings[user_id][movie_id] = stoi(token);
+    }
+    movie_file.close();
+  }
+  // return 3;
+}
+
+void averages_cache(istream &r, ostream &w) {
+  double averages_cache [17771];
+  averages_cache[0] = -1;
+
+  for (int movie_id = 1; movie_id <= 17770; ++movie_id) {
+    generate_averages_cache(movie_id, averages_cache);
+  }
+
+  ofstream ofs("AveragesCache");
+  boost::archive::text_oarchive oarch(ofs);
+  oarch << averages_cache;
 }

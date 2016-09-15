@@ -17,6 +17,6 @@
 
 int main() {
   using namespace std;
-  generate_ratings_cache(cin, cout);
+  predict(cin, cout);
   return 0;
 }

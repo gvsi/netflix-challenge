@@ -21,4 +21,8 @@ using namespace std;
  */
 void generate_ratings_cache(istream &r, ostream &w);
 
+void predict(istream &r, ostream &w);
+
+void averages_cache(istream &r, ostream &w);
+
 #endif
