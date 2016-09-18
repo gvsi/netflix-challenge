@@ -19,6 +19,9 @@ using namespace std;
  * @param r an istream
  * @param w an ostream
  */
+
+void generate_inverted_cache();
+
 void generate_ratings_cache(istream &r, ostream &w);
 
 void predict(istream &r, ostream &w);
