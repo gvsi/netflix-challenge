@@ -14,22 +14,39 @@
 #include <math.h>
 #include <iomanip>
 #include <map>
+#include<queue>
 #include <boost/serialization/map.hpp>
+#include <boost/serialization/vector.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 #include "Netflix.h"
 
 using namespace std;
 
+class CompareDist
+{
+public:
+    bool operator()(pair<int,double> n1,pair<int,double> n2) {
+        return n1.second>n2.second;
+    }
+};
+
+template <class T, class S, class C>
+    S& Container(priority_queue<T, S, C>& q) {
+        struct HackedQueue : private priority_queue<T, S, C> {
+            static S& Container(priority_queue<T, S, C>& q) {
+                return q.*&HackedQueue::c;
+            }
+        };
+    return HackedQueue::Container(q);
+}
+
 void generate_inverted_cache() {
   // user -> [(movie, rating)]
 
-  vector<map<int, map<int, int>>> cache_ratings;
-
-  for (int i = 0; i < 100; ++i) {
-    map<int, map<int, int>> m;
-    cache_ratings.push_back(m);
-  }
+  map<int, map<int, int>> cache_ratings;
 
 
   for (int movie_id = 1; movie_id <= 17771; ++movie_id) {
@@ -48,196 +65,198 @@ void generate_inverted_cache() {
         string token;
         getline(ss, token, ',');
         int user_id = stoi(token);
-        cache_ratings[user_id % 100][user_id][movie_id] = stoi(token);
+        getline(ss, token, ',');
+        cache_ratings[user_id][movie_id] = stoi(token);
       }
       movie_file.close();
     }
   }
 
-  for(int i = 0; i < 100; ++i) {
-    ofstream ofs0("InvertedIndex" + to_string(i));
-    boost::archive::text_oarchive oarch0(ofs0);
-    oarch0 << cache_ratings[i];
-  }
+  ofstream ofs0("InvertedIndex.bin");
+  boost::archive::binary_oarchive oarch0(ofs0);
+  oarch0 << cache_ratings;
 }
 
+void pearson_correlation(istream &r, ostream &w) {
+  map<int, vector<pair<int, double>>> pc_cache;
 
-void movie_lookup(int movie_id, map<int, int>& ratings) {
-  // return rating
-  ostringstream movie_file_name;
-  movie_file_name << internal << setfill('0') << setw(7) << movie_id;
-  // cout << "mv_" + movie_file_name.str() + ".txt" << endl;
-  ifstream movie_file("netflix/training_set/mv_" + movie_file_name.str() + ".txt");
+  map<int, double> user_averages;
+  ifstream uac("AllUsersAveragesCache.bin");
+  boost::archive::binary_iarchive ia(uac);
+  ia >> user_averages;
 
-  if (movie_file.is_open()) {
-    string line;
-    getline(movie_file,line);
-    line.pop_back(); // remove : from the end
-    // assert(stoi(line), movie_id); // confirms that it's the right file
+  map<int, double> user_sds;
+  ifstream uac2("AllUsersSDCache.bin");
+  boost::archive::binary_iarchive ia2(uac2);
+  ia2 >> user_sds;
 
-    while (getline(movie_file,line)) {
-      istringstream ss(line);
-      string token;
-      getline(ss, token, ',');
-      int user_id = stoi(token);
-      if (ratings.count(user_id)) {
-        getline(ss, token, ',');
-        ratings[user_id] = stoi(token);
-      }
-    }
-    movie_file.close();
-  }
-  // return 3;
-}
-
-void print_all_movie_ratings(ostream &w, map<int, map<int, int>> all_movie_ratings) {
-
-  // Print movie rating
-  for(map<int,map<int, int>>::iterator iter = all_movie_ratings.begin(); iter != all_movie_ratings.end(); ++iter) {
-    int movieid = iter->first;
-    map<int, int> ratings = iter->second;
-
-    w << movieid << ":" << endl;
-
-    for(map<int, int>::iterator iter2 = ratings.begin(); iter2 != ratings.end(); ++iter2) {
-      int userid = iter2->first;
-      int rating = iter2->second;
-      w << userid << " " << rating << endl;
-    }
-  }
-}
-
-void store_movie_ratings(ostream &w, map<int,map<int, int>> &all_movie_ratings, map<int, int> &movie_ratings, int movie_id) {
-  if (!movie_ratings.empty()) {
-    movie_lookup(movie_id, movie_ratings);
-
-    // Store in cache
-    all_movie_ratings[movie_id] = movie_ratings;
-
-    movie_ratings.clear();
-  }
-}
-
-void archive_movie_ratings(map<int, map<int, int>> &all_movie_ratings) {
-  ofstream ofs("MovieArchiveCache");
-  boost::archive::text_oarchive oarch(ofs);
-  oarch << all_movie_ratings;
-  // std::map<int, int> new_map;
-  // boost::archive::text_iarchive iarch(ss);
-  // iarch >> new_map;
-  // std::cout << (map == new_map) << std::endl;
-}
-
-
-void generate_ratings_cache(istream &r, ostream &w) {
+  w << "Loading InvertedIndex.bin" << endl;
+  map<int, map<int, int>> user_ratings;
+  ifstream uac3("InvertedIndex.bin");
+  boost::archive::binary_iarchive ia3(uac3);
+  ia3 >> user_ratings;
 
   int movie_id = 0;
-  int user_id = 0;
-  map<int,int> movie_ratings;
-  map<int,map<int, int>> all_movie_ratings;
+  int user1_id = 0;
 
   string line;
   while(getline(r, line)) {
     if (line.back() == ':') {
-
-      store_movie_ratings(w, all_movie_ratings, movie_ratings, movie_id);
-
+      // w << line << endl;
       line.pop_back(); // remove : from the end
       movie_id = stoi(line);
+
     } else {
-      user_id = stoi(line);
-      movie_ratings[user_id] = -1;
+      user1_id = stoi(line);
+      w << user1_id << ":" << endl;
+      double user1_average = user_averages[user1_id];
+      double user1_sd = user_sds[user1_id];
+
+      map<int, int> ratings1 = user_ratings[user1_id];
+
+      // svector<pair<int, double>> v;
+      priority_queue<pair<int,double>,vector<pair<int,double>>,CompareDist> pq;
+
+      // iterate through all users AGAIN
+      for(map<int, map<int, int>>::iterator iter_21 = user_ratings.begin(); iter_21 != user_ratings.end(); ++iter_21) {
+        double pearson_c = 0.0;
+        int count = 0;
+
+        int user2_id = iter_21->first;
+        double user2_average = user_averages[user2_id];
+        double user2_sd = user_sds[user2_id];
+
+        map<int, int> ratings2 = iter_21->second;
+
+        if (user1_id != user2_id) {
+          // iterate through all the movies of user1
+          for(map<int, int>::iterator iter2 = ratings1.begin(); iter2 != ratings1.end(); ++iter2) {
+            int movie_id = iter2->first;
+            // only compute pearson if user2 has rated the movie
+            if (ratings2.count(movie_id)) {
+              int rating1 = iter2->second;
+              int rating2 = ratings2[movie_id];
+              count++;
+              pearson_c += ((rating1 - user1_average) / user1_sd) * ((rating2 - user2_average) / user2_sd);
+            }
+          }
+          pearson_c = pearson_c / (count - 1);
+          if (count >= 50 && pearson_c >= 0.5) {
+            // w << "\t Column user2_id: " << user2_id << ", PC: " << pearson_c << endl;
+            pair<int, double> p = make_pair(user2_id, pearson_c);
+            pq.push(p);
+            if (pq.size() > 50)
+              pq.pop();
+          }
+        }
+      }
+      vector<pair<int, double>> v = Container(pq);
+      //
+      // sort(v.begin(), v.end(), [](const std::pair<int,double> &left, const std::pair<int,double> &right) {
+      //   return left.second > right.second;
+      // });
+
+      pc_cache[user1_id] = v;
+
+      for(vector<pair<int, double>>::iterator iter2 = pc_cache[user1_id].begin(); iter2 != pc_cache[user1_id].end(); ++iter2) {
+        w << "\t Column user2_id: " << iter2->first << ", PC: " << iter2->second << endl;
+      }
+      break;
     }
   }
 
-  // Store ratings for last movie
-  store_movie_ratings(w, all_movie_ratings, movie_ratings, movie_id);
-
-  archive_movie_ratings(all_movie_ratings);
-
-
-  // Read cache
-  map<int, map<int, int>> new_all_movie_ratings;
-  ifstream ifs("MovieArchiveCache");
-  boost::archive::text_iarchive iarch(ifs);
-  iarch >> new_all_movie_ratings;
-
-  print_all_movie_ratings(w, new_all_movie_ratings);
+  ofstream ofs0("PearsonCorrelationCache");
+  boost::archive::text_oarchive oarch0(ofs0);
+  oarch0 << pc_cache;
 
 }
 
-void generate_averages_cache(int movie_id, double averages[]) {
-  // return rating
-  ostringstream movie_file_name;
-  movie_file_name << internal << setfill('0') << setw(7) << movie_id;
-  // cout << "mv_" + movie_file_name.str() + ".txt" << endl;
-  ifstream movie_file("netflix/training_set/mv_" + movie_file_name.str() + ".txt");
+void sd_cache(istream &r, ostream &w) {
+  map<int, double> user_sds;
 
-  double average = 0.0;
-  int count = 0;
+  map<int, double> user_averages;
+  ifstream uac("UserAveragesCache");
+  boost::archive::text_iarchive ia3(uac);
+  ia3 >> user_averages;
 
+  for (int i = 0; i < 100; ++i) {
+    w << "Loading invertedindex" << i << endl;
+    map<int, map<int, int>> user_ratings;
+    ifstream aci("InvertedIndexes/InvertedIndex" + to_string(i));
+    boost::archive::text_iarchive iai(aci);
+    iai >> user_ratings;
 
-  if (movie_file.is_open()) {
-    string line;
-    getline(movie_file,line);
-    line.pop_back(); // remove : from the end
-    // assert(stoi(line), movie_id); // confirms that it's the right file
+    for(map<int, map<int, int>>::iterator iter = user_ratings.begin(); iter != user_ratings.end(); ++iter) {
+      double user_sd = 0.0;
+      int count = 0;
 
-    while (getline(movie_file,line)) {
-      istringstream ss(line);
-      string token;
-      getline(ss, token, ',');
-      int user_id = stoi(token);
+      int user_id = iter->first;
+      double user_average = user_averages[user_id];
 
-      getline(ss, token, ',');
-      average += stoi(token);
-      ++count;
+      map<int, int> ratings = iter->second;
+
+      for(map<int, int>::iterator iter2 = ratings.begin(); iter2 != ratings.end(); ++iter2) {
+        int movie_id = iter2->first;
+        int rating = iter2->second;
+        user_sd += pow(rating - user_average, 2);
+        count++;
+      }
+
+      user_sd = user_sd / (count - 1);
+      user_sd = sqrt(user_sd);
+      user_sds[user_id] = user_sd;
+
+      w << "User " << user_id << ", st: " << user_sd << endl;
     }
-
-    averages[movie_id] = average / count;
-    // cout << movie_id << " " << fixed << setprecision(2) << averages[movie_id] << endl;
-    movie_file.close();
   }
+
+  ofstream ofs0("AllUsersSDCache.bin");
+  boost::archive::binary_oarchive oarch0(ofs0);
+  oarch0 << user_sds;
 }
 
-/*
-void predict(istream &r, ostream &w) {
-  vector<map<int, map<int,int>>> inverted_caches(100);
-  w << "Loading invertedindex" << 0 << endl;
+void mean_cache(istream &r, ostream &w) {
+  map<int, double> user_averages;
+
+  for (int i = 0; i < 100; ++i) {
+    w << "Loading invertedindex" << i << endl;
+    map<int, map<int, int>> user_ratings;
+    ifstream aci("InvertedIndexes/InvertedIndex" + to_string(i));
+    boost::archive::text_iarchive iai(aci);
+    iai >> user_ratings;
+
+    for(map<int, map<int, int>>::iterator iter = user_ratings.begin(); iter != user_ratings.end(); ++iter) {
+      double user_average = 0.0;
+      int count = 0;
+
+      int user_id = iter->first;
+      map<int, int> ratings = iter->second;
+
+      for(map<int, int>::iterator iter2 = ratings.begin(); iter2 != ratings.end(); ++iter2) {
+        int movie_id = iter2->first;
+        int rating = iter2->second;
+        user_average += rating;
+        count++;
+      }
+
+      user_average = user_average / count;
+      user_averages[user_id] = user_average;
+
+      w << "User " << user_id << ", mean: " << user_average << endl;
+    }
+  }
+
+  ofstream ofs0("AllUsersAveragesCache.bin");
+  boost::archive::binary_oarchive oarch0(ofs0);
+  oarch0 << user_averages;
+
+}
+
+void user_predict(int user_id, int movie_id) {
   map<int, map<int, int>> user_ratings;
-  ifstream aci("InvertedIndexes/InvertedIndex" + to_string(0));
-  boost::archive::text_iarchive iai(aci);
-  iai >> user_ratings;
-  inverted_caches[0] = user_ratings;
-
-  for(map<int, map<int, int>>::iterator iter = inverted_caches[0].begin(); iter != inverted_caches[0].end(); ++iter) {
-    int user_id = iter->first;
-    map<int, int> ratings = iter->second;
-    w << "user_id:" << user_id << ":" << endl;
-    int count2 = 0;
-    double user_average = 0.0;
-    for(map<int, int>::iterator iter2 = ratings.begin(); iter2 != ratings.end(); ++iter2) {
-      int movie_id = iter2->first;
-      int rating = iter2->second;
-      w << movie_id << ": " << rating << endl;
-      user_average += rating;
-      count2++;
-    }
-    w << "user_average: " << user_average;
-    w << "count2: " << count2;
-    user_average = user_average / count2;
-    w << "user_average: " << user_average;
-  }
-
-
-}
-*/
-
- void predict(istream &r, ostream &w) {
-  map<int, map<int, int>> new_all_movie_ratings;
-  ifstream mac("MovieArchiveCache");
-  boost::archive::text_iarchive ia(mac);
-  ia >> new_all_movie_ratings;
+  ifstream mac("InvertedIndex.bin");
+  boost::archive::binary_iarchive ia(mac);
+  ia >> user_ratings;
 
   double averages_cache [17771];
   ifstream ac("AveragesCache");
@@ -249,21 +268,90 @@ void predict(istream &r, ostream &w) {
   boost::archive::text_iarchive ia3(uac);
   ia3 >> user_averages;
 
-  // vector<map<int, map<int,int>>> inverted_caches(100);
+  cout << user_ratings[497196][12] << endl; // 3
+  cout << user_ratings[924104][12] << endl; // 3
+  cout << user_ratings[2238663][12] << endl; // 5
   //
-  // for (int i = 0; i < 100; ++i) {
-  //   w << "Loading invertedindex" << i << endl;
-  //   map<int, map<int, int>> user_ratings;
-  //   ifstream aci("InvertedIndexes/InvertedIndex" + to_string(i));
-  //   boost::archive::text_iarchive iai(aci);
-  //   iai >> user_ratings;
-  //   inverted_caches[i] = user_ratings;
+  // int user1_id = user_id;
+  //
+  // w << "Row user1_id: " << user1_id << endl;
+  // double user1_average = user_averages[user1_id];
+  // double user1_sd = user_sds[user1_id];
+  //
+  // map<int, int> ratings1 = user_ratings[user_id];
+  //
+  // // iterate through all users AGAIN
+  // for(map<int, map<int, int>>::iterator iter_21 = user_ratings.begin(); iter_21 != user_ratings.end(); ++iter_21) {
+  //   double pearson_c = 0.0;
+  //   int count = 0;
+  //
+  //   int user2_id = iter_21->first;
+  //   double user2_average = user_averages[user2_id];
+  //   double user2_sd = user_sds[user2_id];
+  //
+  //   map<int, int> ratings2 = iter_21->second;
+  //
+  //   if (user1_id <= user2_id) {
+  //     // iterate through all the movies of user1
+  //     for(map<int, int>::iterator iter2 = ratings1.begin(); iter2 != ratings1.end(); ++iter2) {
+  //       int movie_id = iter2->first;
+  //       // only compute pearson if user2 has rated the movie
+  //       if (ratings2.count(movie_id)) {
+  //         int rating1 = iter2->second;
+  //         int rating2 = ratings2[movie_id];
+  //         count++;
+  //         pearson_c += ((rating1 - user1_average) / user1_sd) * ((rating2 - user2_average) / user2_sd);
+  //       }
+  //     }
+  //     pearson_c = pearson_c / (count - 1);
+  //
+  //     vector<pair<int, double>> all_pearsons;
+  //     if (count >= 50) {
+  //       // w << "\t Column user2_id: " << user2_id << ", PC: " << pearson_c << endl;
+  //       pair<int, double> p1 = make_pair(user2_sd, pearson_c);
+  //       all_pearsons.push_back(p1);
+  //     }
+  //
+  //     sort(all_pearsons.begin(), all_pearsons.end(), [](const std::pair<int,double> &left, const std::pair<int,double> &right) {
+  //       return left.second < right.second;
+  //     });
+  //
+  //     for(std::vector<pair<int, double>>::iterator it = v.begin(); it != v.end(); ++it) {
+  //       int movie_id = it->first;
+  //       int pear = it->second;
+  //       cout << movie_id << ": " << pear << endl;
+  //     }
+  //
+  //   }
   // }
 
-  // map<int, double> user_averages;
+}
+
+void predict(istream &r, ostream &w) {
+  map<int, map<int, int>> new_all_movie_ratings;
+  ifstream mac("MovieArchiveCache");
+  boost::archive::text_iarchive ia(mac);
+  ia >> new_all_movie_ratings;
+
+  // movie averages
+  // double averages_cache [17771];
+  // ifstream ac("AveragesCache");
+  // boost::archive::text_iarchive ia2(ac);
+  // ia2 >> averages_cache;
+
+  map<int, double> user_averages;
+  ifstream uac("UserAveragesCache");
+  boost::archive::text_iarchive ia3(uac);
+  ia3 >> user_averages;
+
+  map<int, double> user_sds;
+  ifstream uac2("AllUsersSDCache.bin");
+  boost::archive::binary_iarchive ia2(uac2);
+  ia2 >> user_sds;
 
   int movie_id = 0;
   int user_id = 0;
+  double movie_normalised_avg = 0.0;
 
   double rmse = 0;
   int count = 0;
@@ -274,6 +362,33 @@ void predict(istream &r, ostream &w) {
       w << line << endl;
       line.pop_back(); // remove : from the end
       movie_id = stoi(line);
+
+      ostringstream movie_file_name;
+      movie_file_name << internal << setfill('0') << setw(7) << movie_id;
+      ifstream movie_file("netflix/training_set/mv_" + movie_file_name.str() + ".txt");
+
+      if (movie_file.is_open()) {
+        string line2;
+        getline(movie_file,line2);
+        line2.pop_back(); // remove : from the end
+        // assert(stoi(line), movie_id); // confirms that it's the right file
+        int u_count = 0;
+        while (getline(movie_file,line2)) {
+          istringstream ss(line2);
+          string token;
+          getline(ss, token, ',');
+          int u_id = stoi(token);
+          getline(ss, token, ',');
+          int u_rating = stoi(token);
+          if (user_sds[u_id] != 0) {
+            double user_normalised = (u_rating - user_averages[u_id]) / user_sds[u_id];
+            movie_normalised_avg += user_normalised;
+            ++u_count;
+          }
+        }
+        movie_normalised_avg /= u_count;
+        movie_file.close();
+      }
 
     } else {
       user_id = stoi(line);
@@ -289,7 +404,8 @@ void predict(istream &r, ostream &w) {
       // user_average = user_average / count2;
       // user_averages[user_id] = user_average;
 
-      double prediction = (0.4*averages_cache[movie_id] + 0.6*user_averages[user_id]);
+      // double prediction = (0.4*averages_cache[movie_id] + 0.6*user_averages[user_id]);
+      double prediction = movie_normalised_avg * user_sds[user_id] + user_averages[user_id];
       int actual = new_all_movie_ratings[movie_id][user_id];
       ++count;
       prediction = floor(prediction * 100) / 100;
@@ -305,45 +421,4 @@ void predict(istream &r, ostream &w) {
 
   rmse = sqrt(rmse / count);
   w << "RMSE: " << rmse;
-}
-
-
-void movie_user_lookup(int movie_id, map<int, map<int, int>>& ratings) {
-  // return rating
-  ostringstream movie_file_name;
-  movie_file_name << internal << setfill('0') << setw(7) << movie_id;
-  // cout << "mv_" + movie_file_name.str() + ".txt" << endl;
-  ifstream movie_file("netflix/training_set/mv_" + movie_file_name.str() + ".txt");
-
-  if (movie_file.is_open()) {
-    string line;
-    getline(movie_file,line);
-    line.pop_back(); // remove : from the end
-    // assert(stoi(line), movie_id); // confirms that it's the right file
-
-    while (getline(movie_file,line)) {
-      istringstream ss(line);
-      string token;
-      getline(ss, token, ',');
-      int user_id = stoi(token);
-
-      getline(ss, token, ',');
-      ratings[user_id][movie_id] = stoi(token);
-    }
-    movie_file.close();
-  }
-  // return 3;
-}
-
-void averages_cache(istream &r, ostream &w) {
-  double averages_cache [17771];
-  averages_cache[0] = -1;
-
-  for (int movie_id = 1; movie_id <= 17770; ++movie_id) {
-    generate_averages_cache(movie_id, averages_cache);
-  }
-
-  ofstream ofs("AveragesCache");
-  boost::archive::text_oarchive oarch(ofs);
-  oarch << averages_cache;
 }
