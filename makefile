@@ -81,7 +81,7 @@ RunNetflix: Netflix.h Netflix.c++ RunNetflix.c++
 	$(CXX) $(CXXFLAGS) Netflix.c++ RunNetflix.c++ -o RunNetflix -lboost_serialization
 
 RunNetflix.tmp: RunNetflix
-	./RunNetflix < netflix/probe.txt > RunNetflix.tmp
+	./RunNetflix < probe.txt > RunNetflix.tmp
 
 TestNetflix: Netflix.h Netflix.c++ TestNetflix.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Netflix.c++ TestNetflix.c++ -o TestNetflix $(LDFLAGS)
