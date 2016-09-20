@@ -30,7 +30,7 @@ ifeq ($(shell uname), Darwin)                                        # Apple
 else ifeq ($(CI), true)                                              # Travis CI
     CXX          := g++-5
     INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++11 -Wall -Weffc++
+    CXXFLAGS     := -pedantic -std=c++11 -Wall -Weffc++ -lboost_serialization
     LIB          := /usr/lib
     LDFLAGS      := -lgtest -lgtest_main -pthread
     CLANG-CHECK  := clang-check
