@@ -105,7 +105,6 @@ TestNetflix: Netflix.h Netflix.c++ TestNetflix.c++
 	-$(CLANG-CHECK) -extra-arg=-std=c++11 -analyze TestNetflix.c++ --
 
 TestNetflix.tmp: TestNetflix
-	$(VALGRIND) ./TestNetflix                               >  TestNetflix.tmp 2>&1
 	$(GCOV) -b Netflix.c++ | grep -A 5 "File 'Netflix.c++'" >> TestNetflix.tmp
 	cat TestNetflix.tmp
 
