@@ -18,7 +18,7 @@ FILES :=                              \
 ifeq ($(shell uname), Darwin)                                        # Apple
     CXX          := g++
     INCLUDE      := /usr/local/include
-    CXXFLAGS     := -pedantic -std=c++11 -I$(INCLUDE) -Wall -Weffc++ -lboost_serialization
+    CXXFLAGS     := -pedantic -std=c++11 -I$(INCLUDE) -Wall -Weffc++
     LIB          := /usr/local/lib
     LDFLAGS      := -lgtest_main
     CLANG-CHECK  := clang-check
@@ -78,7 +78,7 @@ Doxyfile:
 	doxygen -g
 
 RunNetflix: Netflix.h Netflix.c++ RunNetflix.c++
-	$(CXX) $(CXXFLAGS) Netflix.c++ RunNetflix.c++ -o RunNetflix $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) Netflix.c++ RunNetflix.c++ -o RunNetflix -lboost_serialization
 
 RunNetflix.tmp: RunNetflix
 	./RunNetflix < probe.txt > RunNetflix.tmp
