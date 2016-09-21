@@ -16,7 +16,7 @@
 using namespace std;
 
 
-map<int, map<int, int>> build_actual_cache();
+void build_actual_cache(map<int, map<int, int>> actual_ratings);
 
 /**
  * @param r an istream
