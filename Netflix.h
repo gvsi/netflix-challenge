@@ -19,7 +19,6 @@ using namespace std;
  * @param w an ostream
  */
 
-
 int predict(istream &r, ostream &w);
 
 #endif

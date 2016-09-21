@@ -32,7 +32,7 @@ else ifeq ($(CI), true)                                              # Travis CI
     INCLUDE      := /usr/include
     CXXFLAGS     := -pedantic -std=c++11 -Wall -Weffc++
     LIB          := /usr/lib
-    LDFLAGS      := -lgtest -lgtest_main -pthread -lboost_serialization
+    LDFLAGS      := -lgtest -lgtest_main -pthread
     CLANG-CHECK  := clang-check
     GCOV         := gcov-5
     GCOVFLAGS    := -fprofile-arcs -ftest-coverage
@@ -42,7 +42,7 @@ else ifeq ($(CI), true)                                              # Travis CI
 else ifeq ($(shell uname -p), unknown)                               # Docker
     CXX          := g++
     INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++11 -L/usr/lib/x86_64-linux-gnu/ -lboost_serialization -Wall -Weffc++
+    CXXFLAGS     := -pedantic -std=c++11 -L/usr/lib/x86_64-linux-gnu/ -Wall -Weffc++
     LIB          := /usr/lib
     LDFLAGS      := -lgtest -lgtest_main -pthread
     CLANG-CHECK  := clang-check
@@ -78,7 +78,7 @@ Doxyfile:
 	doxygen -g
 
 RunNetflix: Netflix.h Netflix.c++ RunNetflix.c++
-	$(CXX) $(CXXFLAGS) Netflix.c++ RunNetflix.c++ -o RunNetflix -lboost_serialization
+	$(CXX) $(CXXFLAGS) Netflix.c++ RunNetflix.c++ -o RunNetflix
 
 RunNetflix.tmp: RunNetflix
 	./RunNetflix < probe.txt > RunNetflix.tmp

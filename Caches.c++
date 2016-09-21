@@ -144,3 +144,24 @@ void mean_cache(istream &r, ostream &w) {
     oarch0 << user_averages;
 
 }
+
+void actual_ratings_cache(istream &r, ostream &w) {
+    map<int, map<int, int>> user_ratings;
+    ifstream mac("MovieArchiveCache");
+    boost::archive::text_iarchive ia(mac);
+    ia >> user_ratings;
+
+    for(map<int, map<int, int>>::iterator iter = user_ratings.begin(); iter != user_ratings.end(); ++iter) {
+
+        int user_id = iter->first;
+
+        map<int, int> ratings = iter->second;
+
+        for(map<int, int>::iterator iter2 = ratings.begin(); iter2 != ratings.end(); ++iter2) {
+            int movie_id = iter2->first;
+            int rating = iter2->second;
+            w << user_id << " " << movie_id << " " << rating << endl;
+        }
+    }
+}
+
