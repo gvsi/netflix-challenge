@@ -1,0 +1,95 @@
+commit 02798324c6849f7dc017a3962e93229a6265557f
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 21:52:45 2016 -0500
+
+    Use .txt caches, remove Boost support
+
+commit 5165a5decdbf62b10b7fcdce2e2dd64c0aa26f91
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:37:48 2016 -0500
+
+    Update travis.yml
+
+commit fbf742b95baf3758629fd6caaa017c6b563c31d2
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:16:35 2016 -0500
+
+    Update travis.yml
+
+commit e101bf43502c81fd5b5c177c901f8b73d2f192c0
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:09:03 2016 -0500
+
+    Update makefile to debug Travis build
+
+commit 822ca0799b5d27ab240873cd6376085943bccd04
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:02:32 2016 -0500
+
+    Update makefile to debug Travis build
+
+commit 1d67460bdcc4e37dfe813d30c429d2973c42121e
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 09:10:05 2016 -0500
+
+    Move probe file to tracked directory
+
+commit 9a1e44c9aa6ee1a54673818b28ee012ebaa0a334
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 09:03:37 2016 -0500
+
+    Add global Boost flag to makefule
+
+commit 137d3f4ab739982dc839dcc2b39ab062160c670e
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 08:59:40 2016 -0500
+
+    Add Boost flag with Travis
+
+commit e5cbcc3ec62b032a8652d2c5c6eea717dcaed01d
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 08:55:03 2016 -0500
+
+    Add caches, cleanup code, update gitignore, add input
+
+commit f4d6799cf2623f73c3c70e39d8b2d42fed9fdfda
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Mon Sep 19 15:45:20 2016 -0500
+
+    Implement normalised mean movie rating
+
+commit 92df9dc131b2e3649b8e306e81f94e15397b74f7
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Sun Sep 18 17:25:08 2016 -0500
+
+    Add inverted cache
+
+commit 37172fc55c3eeb5020c2841ae53262093d217b51
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Thu Sep 15 12:12:29 2016 -0500
+
+    Add prediction capabilities
+
+commit 09a8bb5e6a3c89713255785a1f2e7e8bdae0e23c
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 14 15:07:27 2016 -0500
+
+    Add first cache
+
+commit 93276294a8e53f70829f776a4f72d9ee6b7b9107
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 14 12:36:33 2016 -0500
+
+    Implement cache generator
+
+commit 0fbe816740e72cb73304f46ea881d1d76a968c1c
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 13 19:54:19 2016 -0500
+
+    Add makefile, .travis.yml, .gitignore
+
+commit 4d0d36282a9d8767e947528b0ee99688041ce8a6
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 13 18:20:49 2016 -0500
+
+    Add README

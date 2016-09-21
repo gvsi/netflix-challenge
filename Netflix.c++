@@ -70,10 +70,10 @@ void build_movie_norm_ratings_cache(map<int, double> &movie_norm_ratings) {
         cache_file.close();
     }
 }
-int predict(istream &r, ostream &w) {
-    map<int, map<int, int>> new_all_movie_ratings;
-    build_actual_cache(new_all_movie_ratings);
 
+int predict(istream &r, ostream &w) {
+    map<int, map<int, int>> actual_ratings;
+    build_actual_cache(actual_ratings);
 
     map<int, double> user_averages;
     build_user_averages_cache(user_averages);
@@ -102,7 +102,7 @@ int predict(istream &r, ostream &w) {
 
             // double prediction = (0.4*averages_cache[movie_id] + 0.6*user_averages[user_id]);
             double prediction = movie_norm_ratings[movie_id] * user_sds[user_id] + user_averages[user_id];
-            int actual = new_all_movie_ratings[movie_id][user_id];
+            int actual = actual_ratings[movie_id][user_id];
             ++count;
             prediction = floor(prediction * 10) / 10;
             rmse += pow(prediction - actual, 2);

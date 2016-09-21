@@ -11,8 +11,12 @@
 // --------
 
 #include <iostream> // istream, ostream
+#include <map>
 
 using namespace std;
+
+
+map<int, map<int, int>> build_actual_cache();
 
 /**
  * @param r an istream

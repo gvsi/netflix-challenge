@@ -42,7 +42,7 @@ else ifeq ($(CI), true)                                              # Travis CI
 else ifeq ($(shell uname -p), unknown)                               # Docker
     CXX          := g++
     INCLUDE      := /usr/include
-    CXXFLAGS     := -pedantic -std=c++11 -L/usr/lib/x86_64-linux-gnu/ -Wall -Weffc++
+    CXXFLAGS     := -pedantic -std=c++11 -Wall -Weffc++
     LIB          := /usr/lib
     LDFLAGS      := -lgtest -lgtest_main -pthread
     CLANG-CHECK  := clang-check
@@ -65,7 +65,7 @@ else                                                                 # UTCS
     CLANG-FORMAT := clang-format-3.8
 endif
 
-collatz-tests:
+netflix-tests:
 	git clone https://github.com/cs371p-fall-2016/netflix-tests/
 
 html: Doxyfile Netflix.h Netflix.c++ RunNetflix.c++ TestNetflix.c++
@@ -147,7 +147,7 @@ status:
 
 # test: html Netflix.log RunNetflix.tmp TestNetflix.tmp netflix-tests check
 
-test: RunNetflix.tmp
+test: html Netflix.log RunNetflix.tmp
 
 versions:
 	which make
