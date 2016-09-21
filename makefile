@@ -161,7 +161,7 @@ status:
 	git remote -v
 	git status
 
-test: $(CACHE-DIR) html Netflix.log RunNetflix.tmp netflix-tests check
+test: $(CACHE-DIR) html Netflix.log RunNetflix.tmp TestNetflix.tmp netflix-tests check
 
 versions:
 	which make
