@@ -19,3 +19,8 @@ CMakeLists.txt
 .idea
 tmp
 netflix/probe.txt
+Caches.c++
+gca386-ActualRatingsCache.txt
+gca386-AllUsersAveragesCache.txt
+gca386-AllUsersSDCache.txt
+gca386-MovieNormMean.txt

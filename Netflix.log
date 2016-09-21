@@ -1,3 +1,15 @@
+commit 8d4329e75ede9fff2e312632f2fa9ee55d93eb53
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 15:49:22 2016 -0500
+
+    Run clang-format
+
+commit bc448afb7a7e05ee83de23c88bbf887c5ac12435
+Author: Giovanni Alcantara <giovanni@cs.utexas.edu>
+Date:   Wed Sep 21 15:42:51 2016 -0500
+
+    Update tests, create required files
+
 commit 44b5e3c6715ea322137182dc03d13a7bf01a521a
 Author: Giovanni Alcantara <me@giovannialcantara.com>
 Date:   Wed Sep 21 09:49:17 2016 -0500

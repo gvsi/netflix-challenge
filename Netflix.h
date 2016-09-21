@@ -16,7 +16,8 @@
 using namespace std;
 
 /**
- * @param actual_ratings a map of maps where to write each movie's actual user ratings.
+ * @param actual_ratings a map of maps where to write each movie's actual user
+ * ratings.
  */
 
 void build_actual_cache(map<int, map<int, int>> &actual_ratings);
@@ -32,10 +33,10 @@ void build_user_averages_cache(map<int, double> &user_averages);
 void build_user_sds_cache(map<int, double> &user_sds);
 
 /**
- * @param actual_ratings a map where to write each movie's normalised average rating.
+ * @param actual_ratings a map where to write each movie's normalised average
+ * rating.
  */
 void build_movie_norm_ratings_cache(map<int, double> &movie_norm_ratings);
-
 
 /**
  * @param r an istream
