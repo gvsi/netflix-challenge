@@ -27,6 +27,7 @@ ifeq ($(shell uname), Darwin)                                        # Apple
     VALGRIND     := valgrind
     DOXYGEN      := doxygen
     CLANG-FORMAT := clang-format
+    CACHE-DIR    := getfiles
 else ifeq ($(CI), true)                                              # Travis CI
     CXX          := g++-5
     INCLUDE      := /usr/include
@@ -39,6 +40,7 @@ else ifeq ($(CI), true)                                              # Travis CI
     VALGRIND     := valgrind
     DOXYGEN      := doxygen
     CLANG-FORMAT := clang-format
+    CACHE-DIR    := getfiles
 else ifeq ($(shell uname -p), unknown)                               # Docker
     CXX          := g++
     INCLUDE      := /usr/include
@@ -51,6 +53,7 @@ else ifeq ($(shell uname -p), unknown)                               # Docker
     VALGRIND     := valgrind
     DOXYGEN      := doxygen
     CLANG-FORMAT := clang-format-3.5
+    CACHE-DIR    := getfiles
 else                                                                 # UTCS
     CXX          := g++-4.8
     INCLUDE      := /usr/include
@@ -63,7 +66,20 @@ else                                                                 # UTCS
     VALGRIND     := valgrind
     DOXYGEN      := doxygen
     CLANG-FORMAT := clang-format-3.8
+    CACHE-DIR    := copyfiles
 endif
+
+getfiles:
+	curl -o gca386-ActualRatingsCache.txt -z gca386-ActualRatingsCache.txt http://www.cs.utexas.edu/users/downing/netflix-cs371p/gca386-ActualRatingsCache.txt
+	curl -o gca386-AllUsersAveragesCache.txt -z gca386-AllUsersAveragesCache.txt http://www.cs.utexas.edu/users/downing/netflix-cs371p/gca386-AllUsersAveragesCache.txt
+	curl -o gca386-AllUsersSDCache.txt -z gca386-AllUsersSDCache.txt http://www.cs.utexas.edu/users/downing/netflix-cs371p/gca386-AllUsersSDCache.txt
+	curl -o gca386-MovieNormMean.txt -z gca386-MovieNormMean.txt http://www.cs.utexas.edu/users/downing/netflix-cs371p/gca386-MovieNormMean.txt
+
+getfiles:
+	cp /u/downing/cs/netflix-cs371p/gca386-ActualRatingsCache.txt gca386-ActualRatingsCache.txt
+	cp /u/downing/cs/netflix-cs371p/gca386-AllUsersAveragesCache.txt gca386-AllUsersAveragesCache.txt
+	cp /u/downing/cs/netflix-cs371p/gca386-AllUsersSDCache.txt gca386-AllUsersSDCache.txt
+	cp /u/downing/cs/netflix-cs371p/gca386-MovieNormMean.txt gca386-MovieNormMean.txt
 
 netflix-tests:
 	git clone https://github.com/cs371p-fall-2016/netflix-tests/
@@ -145,7 +161,7 @@ status:
 	git remote -v
 	git status
 
-test: html Netflix.log RunNetflix.tmp netflix-tests check
+test: $(CACHE-DIR) html Netflix.log RunNetflix.tmp netflix-tests check
 
 versions:
 	which make

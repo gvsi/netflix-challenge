@@ -241,6 +241,7 @@ istringstream r(
     "67\n1502867\n2039501\n190644\n2267391\n1487072\n1985643\n1570147\n1293463"
     "\n1463017\n473864\n2332105\n2496875\n846179");
 ostringstream w;
+
 double rmse = predict(r, w);
 
 TEST(NetflixFixture, predict_rmse) { ASSERT_LT(rmse, 1); }
