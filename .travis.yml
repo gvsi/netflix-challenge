@@ -1,35 +1,44 @@
-sudo: required
-dist: trusty
+sudo: false
+
 language: cpp
+
 branches:
   only:
-  - dev
+    - dev
+
+compiler:
+    - gcc
+
 addons:
   apt:
-    packages:
-    - libboost-all-dev
-    - g++-5
     sources:
-    - ubuntu-toolchain-r-test
-before-install:
-- sudo apt-get update
+      - ubuntu-toolchain-r-test
+    packages:
+      - libboost-dev
+      - doxygen
+      - g++-5
+      - libgtest-dev
+      - valgrind
+
 install:
-- sudo apt-get install libboost-dev
-- sudo apt-get install doxygen
-- sudo apt-get install libgtest-dev
-- sudo apt-get install valgrind
-- ls -al /usr/src
-- cd /usr/src/gtest
-- sudo cmake CMakeLists.txt
-- sudo make
-- sudo cp *.a /usr/lib
-- cd -
+    - pwd
+    - ls -al
+    - mkdir gtest
+    - cd gtest
+    - export LIBRARY_PATH=$(pwd)
+    - cp -r /usr/src/gtest/* ./
+    - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
+    - make
+    - pwd
+    - ls -al
+    - cd -
+
 before_script:
-- uname -a
-- printenv | sort
-- apt list --installed
-- make versions
+    - uname -a
+    - printenv
+    - make versions
+
 script:
-- date
-- ls -al
-- make test
+    - date
+    - ls -al
+    - make test
