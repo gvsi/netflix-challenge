@@ -1,3 +1,21 @@
+commit 44b5e3c6715ea322137182dc03d13a7bf01a521a
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 09:49:17 2016 -0500
+
+    Add TestNetflix for build cache
+
+commit 2464bcda954a3c9da00d82e59aad9b10768ed702
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 23:18:49 2016 -0500
+
+    Add TestNetflix
+
+commit d96d59201f33f09d64506f12ed9a706417d2d724
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 23:16:25 2016 -0500
+
+    Refactor Netflix files, add log
+
 commit 02798324c6849f7dc017a3962e93229a6265557f
 Author: Giovanni Alcantara <me@giovannialcantara.com>
 Date:   Tue Sep 20 21:52:45 2016 -0500

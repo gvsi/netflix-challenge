@@ -16,6 +16,12 @@
 
 using namespace std;
 
+/// Uses user averages, normalised movie averages, user standard deviation caches
+#define CACHE_OPT
+
+// --------
+// Builds the actual rating cache from the cache file
+// --------
 void build_actual_cache(map<int, map<int, int>> &actual_ratings_cache) {
     ifstream cache_file("gca386-ActualRatingsCache.txt");
 
@@ -29,6 +35,9 @@ void build_actual_cache(map<int, map<int, int>> &actual_ratings_cache) {
     }
 }
 
+// --------
+// Builds the user average rating cache from the cache file
+// --------
 void build_user_averages_cache(map<int, double> &user_averages) {
     ifstream cache_file("gca386-AllUsersAveragesCache.txt");
 
@@ -43,6 +52,9 @@ void build_user_averages_cache(map<int, double> &user_averages) {
     }
 }
 
+// --------
+// Builds the user standard deviation rating cache from the cache file
+// --------
 void build_user_sds_cache(map<int, double> &user_sds) {
     ifstream cache_file("gca386-AllUsersSDCache.txt");
 
@@ -57,6 +69,9 @@ void build_user_sds_cache(map<int, double> &user_sds) {
     }
 }
 
+// --------
+// Builds the movie normalized rating cache from the cache file
+// --------
 void build_movie_norm_ratings_cache(map<int, double> &movie_norm_ratings) {
     ifstream cache_file("gca386-MovieNormMean.txt");
 
@@ -71,7 +86,11 @@ void build_movie_norm_ratings_cache(map<int, double> &movie_norm_ratings) {
     }
 }
 
-int predict(istream &r, ostream &w) {
+// --------
+// Predicts ratings in stdin and prints to stdout
+// --------
+double predict(istream &r, ostream &w) {
+#ifdef CACHE_OPT
     map<int, map<int, int>> actual_ratings;
     build_actual_cache(actual_ratings);
 
@@ -83,6 +102,7 @@ int predict(istream &r, ostream &w) {
 
     map<int, double> movie_norm_ratings;
     build_movie_norm_ratings_cache(movie_norm_ratings);
+#endif
 
     int movie_id = 0;
     int user_id = 0;
@@ -100,13 +120,24 @@ int predict(istream &r, ostream &w) {
         } else {
             user_id = stoi(line);
 
+            double prediction;
+
+            #ifdef CACHE_OPT
             // double prediction = (0.4*averages_cache[movie_id] + 0.6*user_averages[user_id]);
-            double prediction = movie_norm_ratings[movie_id] * user_sds[user_id] + user_averages[user_id];
-            int actual = actual_ratings[movie_id][user_id];
-            ++count;
+            prediction = movie_norm_ratings[movie_id] * user_sds[user_id] + user_averages[user_id];
             prediction = floor(prediction * 10) / 10;
+            
+            #else
+
+            prediction = 3.7; // return absolute mean
+            
+            #endif
+
+
+            int actual = actual_ratings[movie_id][user_id];
             rmse += pow(prediction - actual, 2);
 
+            ++count;            
             w << prediction << endl;
         }
     }

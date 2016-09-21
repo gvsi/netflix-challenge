@@ -81,7 +81,7 @@ RunNetflix: Netflix.h Netflix.c++ RunNetflix.c++
 	$(CXX) $(CXXFLAGS) Netflix.c++ RunNetflix.c++ -o RunNetflix
 
 RunNetflix.tmp: RunNetflix
-	./RunNetflix < probe.txt > RunNetflix.tmp
+	./RunNetflix < RunNetflix.in > RunNetflix.out
 
 TestNetflix: Netflix.h Netflix.c++ TestNetflix.c++
 	$(CXX) $(CXXFLAGS) $(GCOVFLAGS) Netflix.c++ TestNetflix.c++ -o TestNetflix $(LDFLAGS)
@@ -145,9 +145,7 @@ status:
 	git remote -v
 	git status
 
-# test: html Netflix.log RunNetflix.tmp TestNetflix.tmp netflix-tests check
-
-test: html Netflix.log RunNetflix.tmp
+test: html Netflix.log RunNetflix.tmp netflix-tests check
 
 versions:
 	which make
