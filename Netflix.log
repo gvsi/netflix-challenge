@@ -1,3 +1,27 @@
+commit ec75ef1b576dc33eca4ae45dbdf696e2bbf7b410
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:52:53 2016 -0500
+
+    Remove unused files
+
+commit 553e98c03a147c513b1bf2f54c495a4cd667990e
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:41:45 2016 -0500
+
+    Remove Valgrind target from makefile
+
+commit c54074f615618782a4ab1874c7e44c594dbb3b9c
+Author: Giovanni Alcantara <giovanni@cs.utexas.edu>
+Date:   Wed Sep 21 17:39:32 2016 -0500
+
+    Update TestNetflix.out (closes #16)
+
+commit b2b8b2cc41a9b6e5d93e5d647719a89b82b1d7d9
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:30:00 2016 -0500
+
+    Refactor actual ratings cache into predict
+
 commit f5794394aeaa186580508f918befd3f2bce77922
 Author: Giovanni Alcantara <me@giovannialcantara.com>
 Date:   Wed Sep 21 17:21:29 2016 -0500
