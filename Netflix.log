@@ -1,3 +1,33 @@
+commit f5794394aeaa186580508f918befd3f2bce77922
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:21:29 2016 -0500
+
+    Add UTCS file absolute on fail, remove build actual cache
+
+commit 27fdf485a40b240a9d73de6399dfe36f88d185b5
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:01:25 2016 -0500
+
+    Add back TestNetflix.tmp
+
+commit 6c2dbdeb4eecc994fc324f73438c3ae9c77f3f62
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 16:44:53 2016 -0500
+
+    Fix name in makefile
+
+commit 80e43e2ac75aaabcf5e5f3cdc521e7e7b4da01b0
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 16:36:29 2016 -0500
+
+    Ignore caches
+
+commit 61a2c6c83ba85f6a9e5ed7ad500bb25ce3ebd59f
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 16:36:11 2016 -0500
+
+    Remove caches from local directory
+
 commit 8d4329e75ede9fff2e312632f2fa9ee55d93eb53
 Author: Giovanni Alcantara <me@giovannialcantara.com>
 Date:   Wed Sep 21 15:49:22 2016 -0500
