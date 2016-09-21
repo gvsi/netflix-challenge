@@ -17,6 +17,6 @@
 
 int main() {
   using namespace std;
-    predict(cin, cout);
+  predict(cin, cout);
   return 0;
 }
