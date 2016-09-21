@@ -26,6 +26,11 @@ using namespace std;
 void build_actual_cache(map<int, map<int, int>> &actual_ratings_cache) {
   ifstream cache_file("gca386-ActualRatingsCache.txt");
 
+  if (!cache_file) {
+    cache_file.open(
+        "/u/downing/cs/netflix-cs371p/gca386-ActualRatingsCache.txt");
+  }
+
   if (cache_file.is_open()) {
     int movie_id, user_id, rating;
     while (cache_file >> movie_id >> user_id >> rating) {
@@ -40,6 +45,11 @@ void build_actual_cache(map<int, map<int, int>> &actual_ratings_cache) {
 // --------
 void build_user_averages_cache(map<int, double> &user_averages) {
   ifstream cache_file("gca386-AllUsersAveragesCache.txt");
+
+  if (!cache_file) {
+    cache_file.open(
+        "/u/downing/cs/netflix-cs371p/gca386-AllUsersAveragesCache.txt");
+  }
 
   if (cache_file.is_open()) {
     int user_id;
@@ -57,6 +67,10 @@ void build_user_averages_cache(map<int, double> &user_averages) {
 void build_user_sds_cache(map<int, double> &user_sds) {
   ifstream cache_file("gca386-AllUsersSDCache.txt");
 
+  if (!cache_file) {
+    cache_file.open("/u/downing/cs/netflix-cs371p/gca386-AllUsersSDCache.txt");
+  }
+
   if (cache_file.is_open()) {
     int user_id;
     double sd;
@@ -72,6 +86,10 @@ void build_user_sds_cache(map<int, double> &user_sds) {
 // --------
 void build_movie_norm_ratings_cache(map<int, double> &movie_norm_ratings) {
   ifstream cache_file("gca386-MovieNormMean.txt");
+
+  if (!cache_file) {
+    cache_file.open("/u/downing/cs/netflix-cs371p/gca386-MovieNormMean.txt");
+  }
 
   if (cache_file.is_open()) {
     int movie_id;

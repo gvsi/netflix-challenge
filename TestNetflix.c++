@@ -23,17 +23,6 @@
 using namespace std;
 
 // ----
-// build_actual_cache
-// ----
-TEST(NetflixFixture, read_actual_cache) {
-  map<int, map<int, int>> actual_ratings;
-  build_actual_cache(actual_ratings);
-  ASSERT_EQ(actual_ratings[109516][3441], 3);
-  ASSERT_EQ(actual_ratings[10729][510123], 5);
-  ASSERT_EQ(actual_ratings[16265][265], 5);
-}
-
-// ----
 // build_user_averages_cache
 // ----
 TEST(NetflixFixture, read_user_averages_cache) {
