@@ -75,7 +75,7 @@ getfiles:
 	curl -o gca386-AllUsersSDCache.txt -z gca386-AllUsersSDCache.txt http://www.cs.utexas.edu/users/downing/netflix-cs371p/gca386-AllUsersSDCache.txt
 	curl -o gca386-MovieNormMean.txt -z gca386-MovieNormMean.txt http://www.cs.utexas.edu/users/downing/netflix-cs371p/gca386-MovieNormMean.txt
 
-getfiles:
+copyfiles:
 	cp /u/downing/cs/netflix-cs371p/gca386-ActualRatingsCache.txt gca386-ActualRatingsCache.txt
 	cp /u/downing/cs/netflix-cs371p/gca386-AllUsersAveragesCache.txt gca386-AllUsersAveragesCache.txt
 	cp /u/downing/cs/netflix-cs371p/gca386-AllUsersSDCache.txt gca386-AllUsersSDCache.txt
