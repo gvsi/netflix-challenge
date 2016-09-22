@@ -105,7 +105,6 @@ TestNetflix: Netflix.h Netflix.c++ TestNetflix.c++
 	-$(CLANG-CHECK) -extra-arg=-std=c++11 -analyze TestNetflix.c++ --
 
 TestNetflix.tmp: TestNetflix
-	$(VALGRIND) ./TestNetflix                               >  TestNetflix.tmp 2>&1
 	$(GCOV) -b Netflix.c++ | grep -A 5 "File 'Netflix.c++'" >> TestNetflix.tmp
 	cat TestNetflix.tmp
 
@@ -161,7 +160,7 @@ status:
 	git remote -v
 	git status
 
-test: $(CACHE-DIR) html Netflix.log RunNetflix.tmp netflix-tests check
+test: $(CACHE-DIR) html Netflix.log RunNetflix.tmp TestNetflix.tmp netflix-tests check
 
 versions:
 	which make
