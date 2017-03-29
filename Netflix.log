@@ -1,0 +1,185 @@
+commit 39b8aa894f28fab6413cd328f1806274d1d273a7
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:53:40 2016 -0500
+
+    Add HTML files, update log
+
+commit ec75ef1b576dc33eca4ae45dbdf696e2bbf7b410
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:52:53 2016 -0500
+
+    Remove unused files
+
+commit 553e98c03a147c513b1bf2f54c495a4cd667990e
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:41:45 2016 -0500
+
+    Remove Valgrind target from makefile
+
+commit c54074f615618782a4ab1874c7e44c594dbb3b9c
+Author: Giovanni Alcantara <giovanni@cs.utexas.edu>
+Date:   Wed Sep 21 17:39:32 2016 -0500
+
+    Update TestNetflix.out (closes #16)
+
+commit b2b8b2cc41a9b6e5d93e5d647719a89b82b1d7d9
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:30:00 2016 -0500
+
+    Refactor actual ratings cache into predict
+
+commit f5794394aeaa186580508f918befd3f2bce77922
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:21:29 2016 -0500
+
+    Add UTCS file absolute on fail, remove build actual cache
+
+commit 27fdf485a40b240a9d73de6399dfe36f88d185b5
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 17:01:25 2016 -0500
+
+    Add back TestNetflix.tmp
+
+commit 6c2dbdeb4eecc994fc324f73438c3ae9c77f3f62
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 16:44:53 2016 -0500
+
+    Fix name in makefile
+
+commit 80e43e2ac75aaabcf5e5f3cdc521e7e7b4da01b0
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 16:36:29 2016 -0500
+
+    Ignore caches
+
+commit 61a2c6c83ba85f6a9e5ed7ad500bb25ce3ebd59f
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 16:36:11 2016 -0500
+
+    Remove caches from local directory
+
+commit 8d4329e75ede9fff2e312632f2fa9ee55d93eb53
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 15:49:22 2016 -0500
+
+    Run clang-format
+
+commit bc448afb7a7e05ee83de23c88bbf887c5ac12435
+Author: Giovanni Alcantara <giovanni@cs.utexas.edu>
+Date:   Wed Sep 21 15:42:51 2016 -0500
+
+    Update tests, create required files
+
+commit 44b5e3c6715ea322137182dc03d13a7bf01a521a
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 21 09:49:17 2016 -0500
+
+    Add TestNetflix for build cache
+
+commit 2464bcda954a3c9da00d82e59aad9b10768ed702
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 23:18:49 2016 -0500
+
+    Add TestNetflix
+
+commit d96d59201f33f09d64506f12ed9a706417d2d724
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 23:16:25 2016 -0500
+
+    Refactor Netflix files, add log
+
+commit 02798324c6849f7dc017a3962e93229a6265557f
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 21:52:45 2016 -0500
+
+    Use .txt caches, remove Boost support
+
+commit 5165a5decdbf62b10b7fcdce2e2dd64c0aa26f91
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:37:48 2016 -0500
+
+    Update travis.yml
+
+commit fbf742b95baf3758629fd6caaa017c6b563c31d2
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:16:35 2016 -0500
+
+    Update travis.yml
+
+commit e101bf43502c81fd5b5c177c901f8b73d2f192c0
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:09:03 2016 -0500
+
+    Update makefile to debug Travis build
+
+commit 822ca0799b5d27ab240873cd6376085943bccd04
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 20:02:32 2016 -0500
+
+    Update makefile to debug Travis build
+
+commit 1d67460bdcc4e37dfe813d30c429d2973c42121e
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 09:10:05 2016 -0500
+
+    Move probe file to tracked directory
+
+commit 9a1e44c9aa6ee1a54673818b28ee012ebaa0a334
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 09:03:37 2016 -0500
+
+    Add global Boost flag to makefule
+
+commit 137d3f4ab739982dc839dcc2b39ab062160c670e
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 08:59:40 2016 -0500
+
+    Add Boost flag with Travis
+
+commit e5cbcc3ec62b032a8652d2c5c6eea717dcaed01d
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 20 08:55:03 2016 -0500
+
+    Add caches, cleanup code, update gitignore, add input
+
+commit f4d6799cf2623f73c3c70e39d8b2d42fed9fdfda
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Mon Sep 19 15:45:20 2016 -0500
+
+    Implement normalised mean movie rating
+
+commit 92df9dc131b2e3649b8e306e81f94e15397b74f7
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Sun Sep 18 17:25:08 2016 -0500
+
+    Add inverted cache
+
+commit 37172fc55c3eeb5020c2841ae53262093d217b51
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Thu Sep 15 12:12:29 2016 -0500
+
+    Add prediction capabilities
+
+commit 09a8bb5e6a3c89713255785a1f2e7e8bdae0e23c
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 14 15:07:27 2016 -0500
+
+    Add first cache
+
+commit 93276294a8e53f70829f776a4f72d9ee6b7b9107
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Wed Sep 14 12:36:33 2016 -0500
+
+    Implement cache generator
+
+commit 0fbe816740e72cb73304f46ea881d1d76a968c1c
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 13 19:54:19 2016 -0500
+
+    Add makefile, .travis.yml, .gitignore
+
+commit 4d0d36282a9d8767e947528b0ee99688041ce8a6
+Author: Giovanni Alcantara <me@giovannialcantara.com>
+Date:   Tue Sep 13 18:20:49 2016 -0500
+
+    Add README
