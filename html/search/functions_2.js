@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../RunNetflix_8c_09_09.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'RunNetflix.c++']]]
+  ['predict',['predict',['../Netflix_8c_09_09.html#ac1fbb4961872fe365446871795dd94fd',1,'predict(istream &amp;r, ostream &amp;w):&#160;Netflix.c++'],['../Netflix_8h.html#ac1fbb4961872fe365446871795dd94fd',1,'predict(istream &amp;r, ostream &amp;w):&#160;Netflix.c++']]]
 ];

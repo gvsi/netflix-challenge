@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['gca386_2dactualratingscache_2etxt',['gca386-ActualRatingsCache.txt',['../gca386-ActualRatingsCache_8txt.html',1,'']]],
-  ['gca386_2dallusersaveragescache_2etxt',['gca386-AllUsersAveragesCache.txt',['../gca386-AllUsersAveragesCache_8txt.html',1,'']]],
-  ['gca386_2dalluserssdcache_2etxt',['gca386-AllUsersSDCache.txt',['../gca386-AllUsersSDCache_8txt.html',1,'']]],
-  ['gca386_2dmovienormmean_2etxt',['gca386-MovieNormMean.txt',['../gca386-MovieNormMean_8txt.html',1,'']]]
+  ['main',['main',['../RunNetflix_8c_09_09.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'RunNetflix.c++']]]
 ];
